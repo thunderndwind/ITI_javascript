@@ -1,0 +1,4 @@
+# Ignore self tests
+tests*
+selfTest*
+extra

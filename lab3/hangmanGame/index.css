@@ -1,0 +1,196 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.hidden {
+    display: none;
+}
+
+#category-selection {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#category-selection h2 {
+    margin-bottom: 20px;
+}
+
+.button {
+    padding: 10px 20px;
+    font-size: 1em;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button.animals {
+    background-color: #4caf50;
+    color: white;
+}
+
+.button.movies {
+    background-color: #2196f3;
+    color: white;
+}
+
+.button.countries {
+    background-color: #f44336;
+    color: white;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+#game-screen .container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#game-screen h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.difficulty-select {
+    margin: 20px 0;
+}
+
+.difficulty-select label {
+    font-size: 1.2em;
+    margin-right: 10px;
+}
+
+.difficulty-select select {
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.button-container button {
+    padding: 10px;
+    font-size: 1.5em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.button-container button:hover {
+    background-color: #f0f0f0;
+}
+
+.button-container button::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.button-container button:hover::after {
+    opacity: 1;
+}
+
+.word-display {
+    font-size: 2em;
+    letter-spacing: 0.5em;
+    margin: 20px 0;
+    color: #333;
+}
+
+.input-section {
+    margin: 20px 0;
+}
+
+.input-section input {
+    padding: 10px;
+    font-size: 1em;
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.input-section button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.input-section button:hover {
+    background-color: #1e88e5;
+}
+
+.lives,
+.timer {
+    font-size: 1.2em;
+    margin: 10px 0;
+    color: #333;
+}
+
+.hint-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.hint-button:hover {
+    background-color: #e53935;
+}
+
+.hangman-drawing {
+    margin: 20px 0;
+    font-family: monospace;
+    white-space: pre;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.message {
+    font-size: 1.5em;
+    margin: 20px 0;
+    color: #d9534f;
+}
