@@ -138,7 +138,7 @@ var hangmanDrawing = document.getElementById("hangman-drawing");
 var message = document.getElementById("message");
 var difficultySelect = document.getElementById("difficulty");
 var startGameButton = document.getElementById("start-game");
-var goBackButton = document.getElementById("go-back");
+var goBackButton = document.getElementById("go-back-button");
 var restartButton = document.getElementById("restart-game");
 
 function startGame(category) {
@@ -147,6 +147,7 @@ function startGame(category) {
     gameScreen.classList.remove("hidden");
     difficultySelect.disabled = false;
     startGameButton.disabled = false;
+    guessInput.disabled = true;
 }
 
 function initializeGame() {
@@ -155,13 +156,12 @@ function initializeGame() {
     selectedWord = wordList[Math.floor(Math.random() * wordList.length)];
     guessedLetters = [];
     lives = 6;
-    timeLeft = 30;
+    timeLeft = 10;
     gameActive = true;
     difficultySelect.disabled = true;
     startGameButton.disabled = true;
     goBackButton.disabled = true;
     updateWordDisplay();
-    updateLives();
     startTimer();
     message.textContent = "";
     hangmanDrawing.textContent = hangmanStages[0];
@@ -171,8 +171,20 @@ function initializeGame() {
 }
 
 function validateInput(inputValue) {
-    var lastChar = inputValue.charAt(inputValue.length - 1);
+    var inputLength = inputValue.length;
+    if (inputLength != 1) {
+        alert("Only one letter allowed");
+        return false;
+    }
+
+    var lastChar = inputValue.charAt(inputLength - 1);
     var charCode = lastChar.charCodeAt(0);
+
+    if (guessedLetters.includes(guess)) {
+        alert("You already guessed that letter.");
+        return false;
+    }
+
     return (
         (charCode >= 65 && charCode <= 90) ||
         (charCode >= 97 && charCode <= 122)
@@ -182,38 +194,43 @@ function validateInput(inputValue) {
 function handleGuess() {
     if (!gameActive) return;
     var guess = guessInput.value.toLowerCase();
+
     guessInput.value = "";
     if (!guess || guess.length !== 1) {
         alert("Please enter a single letter.");
         return;
     }
+
+    if (guessedLetters.includes(guess)) {
+        alert("You already guessed that letter.");
+        return;
+    }
+
     var charCode = guess.charCodeAt(0);
     if (charCode < 97 || charCode > 122) {
         alert("Please enter a valid letter (a-z).");
         return;
     }
-    if (guessedLetters.includes(guess)) {
-        alert("You already guessed that letter.");
-        return;
-    }
+
     guessedLetters.push(guess);
     if (!selectedWord.includes(guess)) {
         lives--;
         updateLives();
-        if (lives === 0) endGame(false);
     }
+
     updateWordDisplay();
+    restartTimer();
     checkWin();
 }
 
 function updateWordDisplay() {
-    var display = selectedWord
+    var displayWord = selectedWord
         .split("")
         .map(function (letter) {
             return guessedLetters.includes(letter) ? letter : "_";
         })
         .join(" ");
-    wordDisplay.textContent = display;
+    wordDisplay.textContent = displayWord;
 }
 
 function updateLives() {
@@ -228,10 +245,12 @@ function checkWin() {
         })
     )
         endGame(true);
+    else if (lives <= 0) endGame(false);
 }
 
 function endGame(won) {
     gameActive = false;
+    console.log({ timer });
     clearInterval(timer);
     if (won) {
         message.textContent = "Congratulations! You won!";
@@ -239,6 +258,7 @@ function endGame(won) {
     } else {
         message.textContent = "Game over! The word was: " + selectedWord;
     }
+
     goBackButton.disabled = false;
     guessInput.disabled = true;
     guessButton.disabled = true;
@@ -247,13 +267,25 @@ function endGame(won) {
 
 function startTimer() {
     clearInterval(timer);
-    timeLeft = 30;
+    timeLeft = 10;
     timerCount.textContent = timeLeft;
     timer = setInterval(function () {
         timeLeft--;
         timerCount.textContent = timeLeft;
-        if (timeLeft <= 0) endGame(false);
+        if (timeLeft <= 0) {
+            if (lives > 0) lives--;
+            else {
+                endGame(false);
+                return;
+            }
+            timeLeft = 10;
+        }
+        updateLives();
     }, 1000);
+}
+
+function restartTimer() {
+    startTimer();
 }
 
 function handleHint() {
@@ -271,7 +303,7 @@ function resetGame() {
     selectedWord = "";
     guessedLetters = [];
     lives = 6;
-    timeLeft = 30;
+    timeLeft = 10;
     gameActive = false;
     difficultySelect.disabled = false;
     startGameButton.disabled = false;
@@ -282,15 +314,15 @@ function resetGame() {
     wordDisplay.textContent = "";
     livesCount.textContent = lives;
     timerCount.textContent = timeLeft;
-    hangmanDrawing.textContent = hangmanStages[0];
+    hangmanDrawing.textContent = "";
     message.textContent = "";
     clearInterval(timer);
 }
 
 function goBack() {
+    resetGame();
     gameScreen.classList.add("hidden");
     categorySelection.classList.remove("hidden");
-    resetGame();
 }
 
 function restartGame() {
